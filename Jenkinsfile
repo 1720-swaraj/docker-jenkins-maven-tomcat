@@ -7,7 +7,7 @@ pipeline {
     }
     environment {
         DOCKER_CONTAINER="tomcat-${env.BRANCH_NAME}"
-        DOCKER_IMAGE="swaraj9/LoginApp:${BUILD_NUMBER}"
+        DOCKER_IMAGE="swaraj9/LoginApp:${env.BUILD_NUMBER}"
 
     }
     stages {
@@ -36,7 +36,7 @@ pipeline {
         }
         stage('docker-run'){
             steps{
-                sh 'sudo docker run -itdp 8080:8080 --name \$DOCKER_CONTAINER tomcat:9-jdk11'
+                sh 'sudo docker run -itdp 8080:8080 --name \$DOCKER_CONTAINER \$DOCKER_IMAGE'
             }
         }
     }
