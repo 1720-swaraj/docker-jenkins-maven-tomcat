@@ -22,7 +22,7 @@ pipeline {
         }
         stage('build-project') {
             steps {
-                    sh 'sudo mvn clean install'
+                    sh 'mvn clean install'
             }
         }
         stage('docker-build') {
