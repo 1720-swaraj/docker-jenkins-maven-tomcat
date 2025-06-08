@@ -5,16 +5,19 @@ pipeline {
     tools {
         maven 'install-maven'
     }
-    environment {
-        DOCKER_CONTAINER="tomcat-${env.BRANCH_NAME}"
-        DOCKER_IMAGE="swaraj9/LoginApp:${env.BUILD_NUMBER}"
-
-    }
     stages {
         stage('git-checkout') {
             steps {
                 cleanWs()
                 checkout scm
+            }
+        }
+        stage('env-variables') {
+            steps {
+                script {
+                    env.DOCKER_CONTAINER = "tomcat-${env.BRANCH_NAME}"
+                    env.DOCKER_IMAGE = "swaraj9/LoginApp:${env.BUILD_NUMBER}"
+                }
             }
         }
         stage('build-project') {
@@ -24,19 +27,25 @@ pipeline {
         }
         stage('docker-build') {
             steps {
-                docker.build("${env.DOCKER_IMAGE}")
+                script {
+                    docker.build(env.DOCKER_IMAGE)
+                }
             }
         }
         stage('docker-push') {
             steps {
-                withDockerRegistry(credentialsId: 'dockerhub_credentials', url:'') {
-                    dockerImage.push()
+                script {
+                    withDockerRegistry(credentialsId: 'dockerhub_credentials', url:'') {
+                        docker.image(env.DOCKER_IMAGE).push()
+                    }
                 }
             }
         }
-        stage('docker-run'){
-            steps{
-                sh 'sudo docker run -itdp 8080:8080 --name \$DOCKER_CONTAINER \$DOCKER_IMAGE'
+        stage('docker-run') {
+            steps {
+                script {
+                    sh "sudo docker run -itdp 8080:8080 --name ${DOCKER_CONTAINER} ${DOCKER_IMAGE}"
+                }
             }
         }
     }
