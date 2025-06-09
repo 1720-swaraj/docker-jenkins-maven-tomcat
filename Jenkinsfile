@@ -16,7 +16,7 @@ pipeline {
             steps {
                 script {
                     env.DOCKER_CONTAINER = "tomcat-${env.BRANCH_NAME}"
-                    env.DOCKER_IMAGE = "swaraj9/LoginApp:${env.BUILD_NUMBER}"
+                    env.DOCKER_IMAGE = "swaraj9/login_app:${env.BUILD_NUMBER}"
                 }
             }
         }
