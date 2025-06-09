@@ -44,7 +44,7 @@ pipeline {
         stage('docker-run') {
             steps {
                 script {
-                    sh "docker run -itdp 8080:8080 --name ${DOCKER_CONTAINER} ${DOCKER_IMAGE}"
+                    sh "docker run -itdp 80:8080 --name ${DOCKER_CONTAINER} ${DOCKER_IMAGE}"
                 }
             }
         }
