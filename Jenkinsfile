@@ -18,11 +18,11 @@ pipeline {
         //         }
         //     }
         // }
-        // stage('build-project') {
-        //     steps {
-        //             sh 'mvn clean install'
-        //     }
-        // }
+        stage('build-project') {
+            steps {
+                    sh 'mvn -B -DskipTest clean install'
+            }
+        }
         // stage('docker-build') {
         //     steps {
         //         script {
